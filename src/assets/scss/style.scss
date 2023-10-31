@@ -1,0 +1,383 @@
+/*================================================================================
+
+NOTE:
+------
+PLACE HERE YOUR OWN SCSS CODES AND IF NEEDED, OVERRIDE THE STYLES FROM THE OTHER STYLESHEETS.
+WE WILL RELEASE FUTURE UPDATES SO IN ORDER TO NOT OVERWRITE YOUR STYLES IT'S BETTER LIKE THIS.  */
+@import 'variables/_variables.scss';
+
+body {
+  * {
+    font-family: "Microsoft JhengHei", "Montserrat", Helvetica, Arial, monospace !important;
+  }
+}
+
+.color {
+  &0 {
+    color: $primary !important;
+  }
+
+  &1 {
+    color: $primary-color-1 !important;
+  }
+
+  &2 {
+    color: $primary-color-2 !important;
+  }
+
+  &3 {
+    color: $primary-color-3 !important;
+  }
+
+  &4 {
+    color: $primary-color-4 !important;
+  }
+
+  &5 {
+    color: $primary-color-5 !important;
+  }
+
+  &6 {
+    color: $primary-color-6 !important;
+  }
+
+  &Red {
+    color: #ff0000 !important;
+  }
+
+  &Green {
+    color: #00ff00 !important;
+  }
+
+  &Green1 {
+    color: #1b8000 !important;
+  }
+
+  &Yellow {
+    color: #ffff00 !important;
+  }
+
+  &Grey {
+    color: #d3d3d3 !important;
+  }
+
+  &White {
+    color: #fff !important;
+  }
+
+  &Black {
+    color: #000000 !important;
+  }
+}
+
+.borderColor {
+  &0 {
+    border-color: $primary !important;
+  }
+
+  &1 {
+    border-color: $primary-color-1 !important;
+  }
+
+  &2 {
+    border-color: $primary-color-2 !important;
+  }
+
+  &3 {
+    border-color: $primary-color-3 !important;
+  }
+
+  &4 {
+    border-color: $primary-color-4 !important;
+  }
+
+  &5 {
+    border-color: $primary-color-5 !important;
+  }
+
+  &6 {
+    border-color: $primary-color-6 !important;
+  }
+
+  &Red {
+    border-color: #ff0000 !important;
+  }
+
+  &Green {
+    border-color: #00ff00 !important;
+  }
+
+  &Green1 {
+    border-color: #1b8000 !important;
+  }
+
+  &Yellow {
+    border-color: #ffff00 !important;
+  }
+
+  &Grey {
+    border-color: #d3d3d3 !important;
+  }
+
+  &White {
+    border-color: #fff !important;
+  }
+
+  &Black {
+    border-color: #000000 !important;
+  }
+}
+
+.bgColor {
+  &0 {
+    background-color: $primary !important;
+  }
+
+  &1 {
+    background-color: $primary-color-1 !important;
+  }
+
+  &2 {
+    background-color: $primary-color-2 !important;
+  }
+
+  &3 {
+    background-color: $primary-color-3 !important;
+  }
+
+  &4 {
+    background-color: $primary-color-4 !important;
+  }
+
+  &5 {
+    background-color: $primary-color-5 !important;
+  }
+
+  &6 {
+    background-color: $primary-color-6 !important;
+  }
+
+  &Red {
+    background-color: #ff0000 !important;
+  }
+
+  &Green {
+    background-color: #00ff00 !important;
+  }
+
+  &Green1 {
+    background-color: #1b8000 !important;
+  }
+
+  &Yellow {
+    background-color: #ffff00 !important;
+  }
+
+  &Grey {
+    background-color: #d3d3d3 !important;
+  }
+
+  &White {
+    background-color: #fff !important;
+  }
+
+  &Black {
+    background-color: #000000 !important;
+  }
+}
+
+.svg_white {
+  filter: brightness(0) invert(1);
+}
+
+/* 
+
+.loading-bg{
+
+} */
+.required> :not(label) legend::after,
+.required>label::after {
+  content: " **";
+  color: red;
+}
+
+.error-text {
+  color: red
+}
+
+iframe {
+  width: 300px;
+}
+
+.loading-logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.loading-logo img {
+  width: 300px;
+}
+
+/* .loading-bg {}
+
+.main-menu.menu-light .navigation li.nav-item a:hover>* {
+
+  transform: none;
+
+}
+
+.main-menu.menu-light .navigation li.nav-item ul.menu-content li a:hover>* {
+  transform: none;
+}
+
+.nav-item .nav-link {
+  svg {
+    filter: brightness(0) invert(1);
+  }
+}
+ */
+.b-sidebar-body {
+  .quill-editor {
+    height: 300px;
+  }
+
+  .ql-container {
+    height: 60%;
+    overflow: auto;
+  }
+}
+
+#desktop_navbar .dropdown-menu a.router-link-active {
+  background: #ff7c2f;
+}
+
+.opacity1 {
+  opacity: 1 !important;
+}
+
+.opacity0 {
+  opacity: 0 !important;
+}
+
+.no-shadow {
+  box-shadow: 0px 0px 0px #fff !important;
+}
+
+
+.b-table {
+  tr {
+
+    td,
+    th {
+      white-space: nowrap;
+    }
+  }
+
+  .b-table-details {
+    thead {
+      tr th {
+        background-color: #edeede !important;
+      }
+    }
+
+    tbody {
+      tr {
+        background-color: #fbffc6;
+      }
+    }
+  }
+}
+
+.d-grid {
+  display: grid !important;
+}
+
+.place-items-center {
+  place-items: center !important;
+}
+
+
+.bg-submit {
+  border-color: $primary-color-1 !important;
+  background-color: $primary-color-1 !important;
+
+  &:hover {
+    box-shadow: 0 8px 25px -8px $primary-color-1 !important;
+  }
+
+  &:active {
+    border-color: rgba($primary-color-1, 0.8) !important;
+    background-color: rgba($primary-color-1, 0.8) !important;
+  }
+}
+
+.no-rounded {
+  border-radius: 0 0 0 0 !important;
+}
+
+.sami-top-small-rounded {
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+.sami-bottom-small-rounded {
+  border-radius: 0 0 0.5rem 0.5rem;
+}
+
+.small-rounded {
+  border-radius: 0.5rem;
+}
+
+.sami-top-rounded {
+  border-radius: 25px 25px 0 0;
+}
+
+.sami-bottom-rounded {
+  border-radius: 0 0 25px 25px;
+}
+
+.common-rounded {
+  border-radius: 25px;
+}
+
+
+
+.block-color {
+  width: 20px;
+  aspect-ratio: 1;
+  border: 3px solid #000000;
+  border-radius: 0.375rem;
+}
+
+// login and
+.login-form {
+  padding-bottom: 8rem;
+  max-width: 500px;
+  width: 100%;
+}
+
+.bg-login-wrapper {
+  img {
+    object-fit: fill;
+    height: 100vh;
+  }
+}
+
+.login-logo{
+  width: 100%;
+  max-width: 300px;
+}
+
+.menu-logo{
+  width: 50px;
+}
+
+.header-navbar .navbar-container ul.navbar-nav li>a.nav-link {
+  color: #6e6b7b !important;
+  position: relative;
+}
+
+#donut-chart .card-body{
+  padding: 0 !important;
+}

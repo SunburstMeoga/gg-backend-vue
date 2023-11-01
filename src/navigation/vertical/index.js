@@ -18,18 +18,18 @@ export default [
         action: "read",
         resource: "Auth",
       },
-      {
-        title: "RT",
-        route: "coins-rt",
-        action: "read",
-        resource: "Auth",
-      },
-      {
-        title: "BT",
-        route: "coins-bt",
-        action: "read",
-        resource: "Auth",
-      },
+      // {
+      //   title: "RT",
+      //   route: "coins-rt",
+      //   action: "read",
+      //   resource: "Auth",
+      // },
+      // {
+      //   title: "BT",
+      //   route: "coins-bt",
+      //   action: "read",
+      //   resource: "Auth",
+      // },
     ],
   },
   {
@@ -109,43 +109,43 @@ export default [
   },
   {
     title: "铸造",
-    route: "blacklist",
+    route: "casting",
     icon: "UserXIcon",
     action: "read",
     resource: "Auth",
   },
-  {
-    title: "黑名單",
-    route: "blacklist",
-    icon: "UserXIcon",
-    action: "read",
-    resource: "Auth",
-  },
-  {
-    title: "輪盤",
-    route: "roulette",
-    icon: "GiftIcon",
-    action: "read",
-    resource: "Auth",
-  },
+  // {
+  //   title: "黑名單",
+  //   route: "blacklist",
+  //   icon: "UserXIcon",
+  //   action: "read",
+  //   resource: "Auth",
+  // },
+  // {
+  //   title: "輪盤",
+  //   route: "roulette",
+  //   icon: "GiftIcon",
+  //   action: "read",
+  //   resource: "Auth",
+  // },
 
-  {
-    title: "統計",
-    route: "",
-    icon: "TrendingUpIcon",
-    children: [
-      {
-        title: "每日",
-        route: "statistic",
-        action: "read",
-        resource: "Auth",
-      },
-      /* {
-        title: '累計',
-        route: 'statistic',
-        action: 'read',
-        resource: 'Auth'
-      } */
-    ],
-  },
+  // {
+  //   title: "統計",
+  //   route: "",
+  //   icon: "TrendingUpIcon",
+  //   children: [
+  //     {
+  //       title: "每日",
+  //       route: "statistic",
+  //       action: "read",
+  //       resource: "Auth",
+  //     },
+  //     /* {
+  //       title: '累計',
+  //       route: 'statistic',
+  //       action: 'read',
+  //       resource: 'Auth'
+  //     } */
+  //   ],
+  // },
 ];

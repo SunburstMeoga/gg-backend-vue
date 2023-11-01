@@ -5,31 +5,8 @@
                 <span><strong>黑名單：</strong> 只允許購買配套，無法購買NFT和獲得動態收益</span>
             </div>
         </b-alert> -->
-        <b-card title="收益参数"></b-card>
 
-        <b-card no-body class="mb-10">
-            <b-table ref="refBlacklistListTable" class="position-relative" :items="fetchBlacklists" responsive
-                :fields="tableColumns" primary-key="id" :sort-by.sync="sortBy" show-empty
-                empty-text="No matching records found" :sort-desc.sync="isSortDirDesc">
-                <template #cell(change)="data">
-                    <div>
-                        <!-- <span class="align-middle ml-50">刪除</span> -->
-                        <v-select v-model="perPage" :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                            :options="perPageOptions" :clearable="false" class="per-page-selector d-inline-block mx-50" />
-                        <!-- <label></label> -->
-                    </div>
-                </template>
-                <template #cell(confirm)="data">
-                    <div class="delete" @click="handleDelete(data.item)">
-                        <!-- <span class="align-middle ml-50">刪除</span> -->
-                        <b-button variant="success">确认变更</b-button>
-                    </div>
-                </template>
-            </b-table>
-        </b-card>
-
-
-        <b-card title="" title="发售参数" style="market-top:10px;"></b-card>
+        <b-card title="铸造" style="market-top:10px;"></b-card>
         <b-card no-body class="mb-0">
             <b-table class="position-relative" :items="tableReleaseParameters" responsive :fields="releaseParametersItems"
                 primary-key="id" :sort-by.sync="sortBy" show-empty empty-text="No matching records found"
@@ -37,13 +14,13 @@
                 <template #cell(changeNum)="data">
                     <div class="">
                         <!-- <span class="align-middle ml-50">刪除</span> -->
-                        <b-form-input v-model="text" placeholder="请输入要变更的数量"></b-form-input>
+                        <b-form-input v-model="text" placeholder="请输入要铸造的数量"></b-form-input>
                     </div>
                 </template>
                 <template #cell(confirm)="data">
                     <div class="delete" @click="handleDelete(data.item)">
                         <!-- <span class="align-middle ml-50">刪除</span> -->
-                        <b-button variant="success">确认</b-button>
+                        <b-button variant="success">铸造</b-button>
                     </div>
                 </template>
             </b-table>
@@ -69,8 +46,8 @@ import {
     BInputGroup,
     BInputGroupAppend
 } from "bootstrap-vue";
-import blacklistStoreModule from "./blacklistStoreModule";
-import useBlacklistList from "./useBlacklistList"
+import blacklistStoreModule from "../competence/blacklistStoreModule";
+import useBlacklistList from "../competence/useBlacklistList"
 import store from "@/store";
 import { ref, onUnmounted, onMounted } from "@vue/composition-api";
 import vSelect from "vue-select";
@@ -126,8 +103,8 @@ export default {
                 confirmButtonText: "刪除",
                 cancelButtonText: "取消",
                 customClass: {
-                    confirmButton: "btn btn-danger",
-                    cancelButton: "btn btn-outline-danger ml-1",
+                    confirmButton: "btn btn-primary",
+                    cancelButton: "btn btn-outline-primary ml-1",
                 },
                 buttonsStyling: false,
             }).then((result) => {
@@ -183,10 +160,10 @@ export default {
             { key: "type", label: "NFT类型" },
             { key: "name", label: "NFT名称" },
 
-            { key: "notYetSale", label: "未发售数量" },
-            { key: "currentNum", label: "当前每日发售数量" },
-            { key: "changeNum", label: "变更每日发售数量" },
-            { key: "confirm", label: "确认变更" }
+            { key: "notYetSale", label: "市场总量" },
+            { key: "currentNum", label: "市场剩余" },
+            { key: "changeNum", label: "铸造数量" },
+            { key: "confirm", label: "铸造" }
         ])
         const tableReleaseParameters = ref([
             {

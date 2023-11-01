@@ -75,6 +75,16 @@ export default [
       resource: "Auth",
     },
   },
+  //铸造
+  {
+    path: "/casting",
+    name: "casting",
+    component: () => import("@/views/cast/cast.vue"),
+    meta: {
+      action: "read",
+      resource: "Auth",
+    },
+  },
 
   {
     path: "/market/wild-card",
@@ -104,15 +114,15 @@ export default [
       resource: "Auth",
     },
   },
-  {
-    path: "/casting",
-    name: "casting",
-    component: () => import("@/views/casting/Casting.vue"),
-    meta: {
-      action: "read",
-      resource: "Auth",
-    },
-  },
+  // {
+  //   path: "/casting",
+  //   name: "casting",
+  //   component: () => import("@/views/casting/Casting.vue"),
+  //   meta: {
+  //     action: "read",
+  //     resource: "Auth",
+  //   },
+  // },
   {
     path: "/roles/list",
     name: "roles-list",

@@ -1,102 +1,180 @@
 export default [
+  //货币
+  {
+    path: "/coins/wgt",
+    name: "coins-wgt",
+    component: () => import("@/views/coin/Coin.vue"),
+    meta: {
+      action: "read",
+      resource: "Auth",
+    },
+  },
+  {
+    path: "/coins/wgt-a",
+    name: "coins-wgt-a",
+    component: () => import("@/views/coin/Coin.vue"),
+    meta: {
+      action: "read",
+      resource: "Auth",
+    },
+  },
+  //市场
+  {
+    path: "/market/campaign-token",
+    name: "campaign-token",
+    component: () => import("@/views/market/campaignToken"),
+    meta: {
+      action: "read",
+      resource: "Auth",
+    },
+  },
+  {
+    path: "/market/character-card",
+    name: "character-card",
+    component: () => import("@/views/market/characterCard"),
+    meta: {
+      action: "read",
+      resource: "Auth",
+    },
+  },
+  {
+    path: "/market/scrooge-card",
+    name: "scrooge-card",
+    component: () => import("@/views/market/scroogeCard"),
+    meta: {
+      action: "read",
+      resource: "Auth",
+    },
+  },
+  //设置
+  {
+    path: "/setting/income-offerings",
+    name: "income-offerings",
+    component: () => import("@/views/setting/incomeOfferings.vue"),
+    meta: {
+      action: "read",
+      resource: "Auth",
+    },
+  },
+  //权限
+  {
+    path: "/competence/consult",
+    name: "competence-consult",
+    component: () => import("@/views/competence/consult.vue"),
+    meta: {
+      action: "read",
+      resource: "Auth",
+    },
+  },
+  {
+    path: "/competence/blacklist",
+    name: "competence-blacklist",
+    component: () => import("@/views/competence/blackList.vue"),
+    meta: {
+      action: "read",
+      resource: "Auth",
+    },
+  },
+
+  {
+    path: "/market/wild-card",
+    name: "wild-card",
+    component: () => import("@/views/market/wildCard"),
+    meta: {
+      action: "read",
+      resource: "Auth",
+    },
+  },
+  {
+    path: "/market/composite-card",
+    name: "composite-card",
+    component: () => import("@/views/market/compositeCard"),
+    meta: {
+      action: "read",
+      resource: "Auth",
+    },
+  },
+
   {
     path: "/statistic",
     name: "statistic",
-    component:() => import("@/views/statistic/Statistic.vue"),
-    meta:{
+    component: () => import("@/views/statistic/Statistic.vue"),
+    meta: {
       action: "read",
-      resource: "Auth"
-    }
+      resource: "Auth",
+    },
   },
   {
     path: "/casting",
     name: "casting",
-    component:() => import("@/views/casting/Casting.vue"),
-    meta:{
+    component: () => import("@/views/casting/Casting.vue"),
+    meta: {
       action: "read",
-      resource: "Auth"
-    }
+      resource: "Auth",
+    },
   },
   {
-    path:'/roles/list',
-    name: 'roles-list',
-    component:() => import('@/views/role/roles-list/RolesList.vue'),
-    meta:{
-      action: 'read',
-      resource: 'roles'
-    }
+    path: "/roles/list",
+    name: "roles-list",
+    component: () => import("@/views/role/roles-list/RolesList.vue"),
+    meta: {
+      action: "read",
+      resource: "roles",
+    },
   },
   {
-    path:'/roles/edit/:id',
-    name: 'roles-edit',
-    component:() => import('@/views/role/roles-edit/RolesEdit.vue'),
-    meta:{
-      action: 'read',
-      resource: 'roles'
-    }
+    path: "/roles/edit/:id",
+    name: "roles-edit",
+    component: () => import("@/views/role/roles-edit/RolesEdit.vue"),
+    meta: {
+      action: "read",
+      resource: "roles",
+    },
   },
   {
     path: "/pool",
     name: "pool",
-    component:() => import("@/views/pool/Pool.vue"),
-    meta:{
+    component: () => import("@/views/pool/Pool.vue"),
+    meta: {
       action: "read",
-      resource: "Auth"
-    }
+      resource: "Auth",
+    },
   },
   {
     path: "/blacklist",
     name: "blacklist",
-    component:() => import("@/views/blacklist/Blacklist.vue"),
-    meta:{
+    component: () => import("@/views/blacklist/Blacklist.vue"),
+    meta: {
       action: "read",
-      resource: "Auth"
-    }
+      resource: "Auth",
+    },
   },
   {
     path: "/roulette",
     name: "roulette",
     component: () => import("@/views/roulette/Roulette.vue"),
-    meta:{
+    meta: {
       action: "read",
-      resource: "Auth"
-    }
-  },
-  {
-    path: "/coins/pmt",
-    name: 'coins-pmt',
-    component: () => import("@/views/coin/Coin.vue"),
-    meta:{
-      action: "read",
-      resource: "Auth"
-    }
-  },
-  {
-    path: "/coins/mt",
-    name: 'coins-mt',
-    component: () => import("@/views/coin/Coin.vue"),
-    meta:{
-      action: "read",
-      resource: "Auth"
-    }
+      resource: "Auth",
+    },
   },
   {
     path: "/coins/rt",
-    name: 'coins-rt',
+    name: "coins-rt",
     component: () => import("@/views/coin/Coin.vue"),
-    meta:{
+    meta: {
       action: "read",
-      resource: "Auth"
-    }
+      resource: "Auth",
+    },
   },
   {
     path: "/coins/bt",
-    name: 'coins-bt',
+    name: "coins-bt",
     component: () => import("@/views/coin/Coin.vue"),
-    meta:{
+    meta: {
       action: "read",
-      resource: "Auth"
-    }
+      resource: "Auth",
+    },
   },
   {
     path: "/users/list",

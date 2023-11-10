@@ -11,34 +11,37 @@
             <b-row>
                 <b-col cols="12" md="12">
                     <b-input-group>
-                        <b-form-input v-model="address" class="d-inline-block mr-1" placeholder="輸入钱包地址..." />
+                        <b-form-input v-model="addr" class="d-inline-block mr-1" placeholder="輸入钱包地址..." />
                         <b-input-group-append>
-                            <b-button variant="success" style="margin:0;padding:0 10px;" @click="handleSubmit">查询</b-button>
+                            <b-button variant="success" style="margin:0;padding:0 10px;"
+                                @click="handleQuery()">查询</b-button>
                         </b-input-group-append>
                     </b-input-group>
                 </b-col>
             </b-row>
         </b-card>
         <!--貨幣數據-->
-        <b-row class="match-height">
-            <b-col xl="3" md="3" sm="6" cols="6">
-                <statistic-card-vertical class="statistic-box" icon="TrendingUpIcon" :statistic="coin.total_supply"
-                    statistic-title="个人业绩" color="success" />
-            </b-col>
-            <b-col xl="3" md="3" sm="6" cols="6">
-                <statistic-card-vertical class="statistic-box" icon="CpuIcon" :statistic="coin.today_supply"
-                    statistic-title="团队业绩" color="warning" />
-            </b-col>
-            <b-col xl="3" md="3" sm="6" cols="6">
-                <statistic-card-vertical class="statistic-box" icon="RotateCwIcon" :statistic="coin.market_circulation"
-                    statistic-title="邀请数量" color="danger" />
-            </b-col>
-            <b-col xl="3" md="3" sm="6" cols="6">
-                <statistic-card-vertical class="statistic-box" icon="UsersIcon" :statistic="coin.address_average"
-                    statistic-title="个人收益值" color="info" />
-            </b-col>
-        </b-row>
-
+        <b-overlay :show="loading_stat" spinner-variant="primary" spinner-type="grow" spinner-small rounded="sm">
+            <b-row class="match-height">
+                <b-col xl="3" md="3" sm="6" cols="6">
+                    <statistic-card-vertical class="statistic-box" icon="TrendingUpIcon"
+                        :statistic="Math.round(statistic.reward_type_1)" statistic-title="个人业绩" color="success" />
+                </b-col>
+                <b-col xl="3" md="3" sm="6" cols="6">
+                    <statistic-card-vertical class="statistic-box" icon="CpuIcon"
+                        :statistic="Math.round(statistic.reward_type_6)" statistic-title="团队业绩" color="warning" />
+                </b-col>
+                <b-col xl="3" md="3" sm="6" cols="6">
+                    <statistic-card-vertical class="statistic-box" icon="RotateCwIcon"
+                        :statistic="Math.round(statistic.reward_type_7)" statistic-title="邀请数量" color="danger" />
+                </b-col>
+                <b-col xl="3" md="3" sm="6" cols="6">
+                    <statistic-card-vertical class="statistic-box" icon="UsersIcon"
+                        :statistic="Math.round(statistic.reward_type_3)" statistic-title="个人收益值" color="info" />
+                </b-col>
+            </b-row>
+        </b-overlay>
+        <b-overlay :show="loading_nft" spinner-variant="primary" spinner-type="grow" spinner-small rounded="sm">
         <b-card no-body class="mb-0">
             <div class="m-2">
                 <!-- Table Top -->
@@ -70,6 +73,9 @@
             <b-table ref="refAddressListTable" class="position-relative" :items="fetchAddresses" responsive
                 :fields="tableColumns" primary-key="id" :sort-by.sync="sortBy" show-empty
                 empty-text="No matching records found" :sort-desc.sync="isSortDirDesc">
+                <template #cell(utc)="data">
+                    {{ timestampToDateTIme(data.item.utc)}}
+                </template>
             </b-table>
 
             <div class="mx-2 mb-2">
@@ -101,6 +107,7 @@
                 </b-row>
             </div>
         </b-card>
+    </b-overlay>
     </div>
 </template>
 
@@ -120,7 +127,8 @@ import {
     BPagination,
     BTable,
     BInputGroup,
-    BInputGroupAppend
+    BInputGroupAppend,
+    BOverlay,
 } from "bootstrap-vue";
 import store from "@/store";
 import { ref, onUnmounted, onMounted } from "@vue/composition-api";
@@ -150,11 +158,22 @@ export default {
         BInputGroup,
         BInputGroupAppend,
         StatisticCardVertical,
-        vSelect
+        vSelect,
+        BOverlay
     },
     watch: {
         $route(to, from) {
             this.fetchCoin()
+            
+        }
+    },
+    mounted() {
+        this.fetchStat()
+    },
+    methods: {
+        handleQuery() {
+            this.fetchStat();
+            this.searchQuery = this.addr;
         }
     },
     setup() {
@@ -209,6 +228,11 @@ export default {
             isSortDirDesc,
             refetchData,
             refAddressListTable,
+            fetchStat,
+            addr,
+            statistic,
+            loading_stat,
+            loading_nft
         } = useAddressList();
 
 
@@ -228,6 +252,11 @@ export default {
             coin,
             fetchCoin,
             trigger,
+            fetchStat,
+            addr,
+            statistic,
+            loading_stat,
+            loading_nft
         }
     }
 

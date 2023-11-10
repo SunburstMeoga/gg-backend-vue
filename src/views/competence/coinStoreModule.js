@@ -7,9 +7,16 @@ export default {
   mutations: {},
   actions: {
     // 要更改返正確的API 接口, for demo only
-    fetchCoinStat(cts, queryParams){
+    fetchStat(cts, queryParams){
         return new Promise((resolve, reject) => {
-            axiosIns.get('/coins/stat', {params: queryParams})
+            axiosIns.get('/incomes/accumulated', {params: queryParams})
+            .then(response=>resolve(response))
+            .catch(error=>reject(error))
+        })
+    },
+    fetchAddresses(cts, queryParams){
+        return new Promise((resolve, reject) => {
+            axiosIns.get('/nfts', {params: queryParams})
             .then(response=>resolve(response))
             .catch(error=>reject(error))
         })

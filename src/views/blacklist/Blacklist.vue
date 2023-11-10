@@ -1,10 +1,10 @@
 <template>
     <div>
-        <b-alert variant="primary" show>
+    <!--     <b-alert variant="primary" show>
             <div class="alert-body">
                 <span><strong>黑名單：</strong> 只允許購買配套，無法購買NFT和獲得動態收益</span>
             </div>
-        </b-alert>
+        </b-alert> -->
         <b-card title="" :key="`coin_${trigger}`">
             <b-row>
                 <b-col cols="12" md="12">
@@ -48,6 +48,7 @@
             <b-table ref="refBlacklistListTable" class="position-relative" :items="fetchBlacklists" responsive
                 :fields="tableColumns" primary-key="id" :sort-by.sync="sortBy" show-empty
                 empty-text="No matching records found" :sort-desc.sync="isSortDirDesc">
+                <template #cell(utc)="data">{{timestampToDateTIme(data.item.utc)}}</template>
                 <template #cell(action)="data">
                     <div class="delete" @click="handleDelete(data.item)">
                         <span class="align-middle ml-50">刪除</span>
@@ -152,7 +153,21 @@ export default {
                 buttonsStyling: false,
             }).then((result) => {
                 if (result.value) {
-                    
+                    store.dispatch("blacklist/addBlacklistAddress", {addr: this.address})
+                    .then((response) => {
+                            this.refetchData();
+                            this.address = '';
+                            this.showMessage(
+                                "Success",
+                                response.data.message,
+                                "CheckIcon",
+                                "success"
+                            );
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            this.showMessage('Fail', error.response.data.message, 'HeartIcon', 'danger')
+                        });
                 }});
         },
         handleDelete(item)
@@ -170,9 +185,9 @@ export default {
                 buttonsStyling: false,
             }).then((result) => {
                 if (result.value) {
-                    this.showMessage('Fail', '還没連接API', 'HeartIcon', 'danger')
+                    //this.showMessage('Fail', '還没連接API', 'HeartIcon', 'danger')
                     //連接API儲存數據
-                 /*    store.dispatch("blacklist/removeBlacklistAddress", item.id)
+                     store.dispatch("blacklist/removeBlacklistAddress", {addr: item.addr})
                         .then((response) => {
                             this.refetchData();
                             this.showMessage(
@@ -185,7 +200,7 @@ export default {
                         .catch((error) => {
                             console.log(error);
                             this.showMessage('Fail', error.response.data.message, 'HeartIcon', 'danger')
-                        }); */
+                        }); 
                 }
             })
         }

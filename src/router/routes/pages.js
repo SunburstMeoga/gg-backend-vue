@@ -69,7 +69,7 @@ export default [
   {
     path: "/competence/blacklist",
     name: "competence-blacklist",
-    component: () => import("@/views/competence/blackList.vue"),
+    component: () => import("@/views/blacklist/Blacklist.vue"),
     meta: {
       action: "read",
       resource: "Auth",

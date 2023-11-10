@@ -5,6 +5,23 @@ export const statusOptions = [
     {label: 'All', value: -1}
 ];
 
+export function timestampToDateTIme(unixTimestamp)
+{
+    let date = new Date(unixTimestamp * 1000);
+
+    let formattedDate = 
+    date.getFullYear() + '-' + 
+    ('0' + (date.getMonth()+1)).slice(-2) + '-' +  // 月份基於0
+    ('0' + date.getDate()).slice(-2) + ' ' + 
+    ('0' + date.getHours()).slice(-2) + ':' + 
+    ('0' + date.getMinutes()).slice(-2) + ':' + 
+    ('0' + date.getSeconds()).slice(-2);
+
+    return formattedDate;
+}
+
+
+
 export function getCorrectDateTime(datetime, withoutTime)
 {
     let utcDate

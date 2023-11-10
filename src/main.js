@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import { ToastPlugin, ModalPlugin } from 'bootstrap-vue'
 import VueCompositionAPI from '@vue/composition-api'
-import {getCorrectDateTime, maxDate} from '@/libs/helper'
+import {getCorrectDateTime, maxDate, timestampToDateTIme} from '@/libs/helper'
 Vue.prototype.getCorrectDateTime = getCorrectDateTime
+Vue.prototype.timestampToDateTIme = timestampToDateTIme
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'

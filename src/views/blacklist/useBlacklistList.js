@@ -11,8 +11,8 @@ export default function useBlacklistList(){
     const refBlacklistListTable = ref(null)
     
     const tableColumns = [
-        {key: 'address', label: '地址'},
-        {key: 'last_update', label: '創建時間'},
+        {key: 'addr', label: '地址'},
+        {key: 'utc', label: '更新時間'},
         {key: 'action', label: '操作'},
     ];
 
@@ -21,7 +21,7 @@ export default function useBlacklistList(){
     const currentPage = ref(1)
     const perPageOptions = [10, 25, 50, 100]
     const searchQuery = ref('')
-    const sortBy = ref('address')
+    const sortBy = ref('addr')
     const isSortDirDesc = ref(true)
 
     const dataMeta = computed(() => {
@@ -55,25 +55,7 @@ export default function useBlacklistList(){
 
     const fetchBlacklists = (ctx, callback) => {
 
-        let blacklist = [
-            {
-                address: '0x0002....2asd',
-                last_update: '2023-10-30 12:00:00',
-            },
-            {
-                address: '0x0002....2asd',
-                last_update: '2023-10-30 12:00:00',
-            },
-            {
-                address: '0x0002....2asd',
-                last_update: '2023-10-30 12:00:00',
-            }
-        ]
-
-        callback(blacklist)
-        totalBlacklists.value = blacklist.length
-
-        /* store.dispatch('address/fetchBlacklists', {
+         store.dispatch('blacklist/fetchBlacklists', {
             q: searchQuery.value,
             perPage: perPage.value,
             page: currentPage.value,
@@ -81,8 +63,8 @@ export default function useBlacklistList(){
             sortDesc: isSortDirDesc.value,
         })
         .then(response => {
-            const { addresses, total} = response.data
-            callback(addresses)
+            const { blacks, total} = response.data
+            callback(blacks)
             totalBlacklists.value = total
         })
         .catch(() => {
@@ -94,7 +76,7 @@ export default function useBlacklistList(){
                   variant: 'danger',
                 },
             })
-        }) */
+        }) 
 
     }
 

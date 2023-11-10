@@ -12,7 +12,7 @@ export default function useBlacklistList(){
     
     const tableColumns = [
         {key: 'addr', label: '地址'},
-        {key: 'utc', label: '更新時間'},
+       /*  {key: 'utc', label: '更新時間'}, */
         {key: 'action', label: '操作'},
     ];
 

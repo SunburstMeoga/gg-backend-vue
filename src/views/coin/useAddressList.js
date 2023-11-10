@@ -11,9 +11,9 @@ export default function useAddressList(){
     const refAddressListTable = ref(null)
     
     const tableColumns = [
-        {key: 'address', label: '地址'},
-        {key: 'amount', label: '剩餘量'},
-        {key: 'last_update', label: '最後交易NFT時間'},
+        {key: 'addr', label: '地址'},
+        {key: 'v', label: '剩餘量'},
+      /*   {key: 'last_update', label: '最後交易NFT時間'}, */
     ];
 
     const perPage = ref(10)
@@ -21,8 +21,12 @@ export default function useAddressList(){
     const currentPage = ref(1)
     const perPageOptions = [10, 25, 50, 100]
     const searchQuery = ref('')
-    const sortBy = ref('address')
+    const sortBy = ref('v')
     const isSortDirDesc = ref(true)
+
+    const addr = ref(null)
+    const symbol = ref(null)
+    const statistic = ref({total_supply: 0, total_circulation: 0, today_supply: 0, "24h_supply": 0, total_address: 0, market_circulation: 0, address_average: 0, contract_address: '', symbol: ""})
 
     const dataMeta = computed(() => {
         const localItemsCount = refAddressListTable.value ? refAddressListTable.value.localItems.length : 0
@@ -49,57 +53,53 @@ export default function useAddressList(){
         refAddressListTable.value.refresh()
     }
 
-    watch([currentPage, perPage, searchQuery], () => {
+    watch([currentPage, perPage, searchQuery, symbol], () => {
         refetchData()
     })
 
+    const fetchBalance = () => {
+        if (symbol.value) {
+            store
+              .dispatch("coin-address/fetchStat", {
+                symbol: symbol.value
+              })
+              .then((response) => {
+                statistic.value = {...statistic.value, ...response.data}
+              })
+              .catch((error) => {
+                    console.log(error)
+              });
+          }
+      }
+
     const fetchAddresses = (ctx, callback) => {
-
-        let address = [
-            {
-                address: '0x0002....2asd',
-                amount: 987654321,
-                last_update: '2023-10-30 12:00:00',
-            },
-            {
-                address: '0x0002....2asd',
-                amount: 987654321,
-                last_update: '2023-10-30 12:00:00',
-            },
-            {
-                address: '0x0002....2asd',
-                amount: 987654321,
-                last_update: '2023-10-30 12:00:00',
-            }
-        ]
-
-        callback(address)
-        totalAddresses.value = address.length
-
-        /* store.dispatch('address/fetchAddresses', {
-            q: searchQuery.value,
-            perPage: perPage.value,
-            page: currentPage.value,
-            sortBy: sortBy.value,
-            sortDesc: isSortDirDesc.value,
-        })
-        .then(response => {
-            const { addresses, total} = response.data
-            callback(addresses)
-            totalAddresses.value = total
-        })
-        .catch(() => {
-            toast({
+        if (symbol.value) {
+          store
+            .dispatch("coin-address/fetchAddresses", {
+              q: searchQuery.value,
+              perPage: perPage.value,
+              page: currentPage.value,
+              sortBy: sortBy.value,
+              sortDesc: isSortDirDesc.value,
+              symbol: symbol.value
+            })
+            .then((response) => {
+              const { addresses, total } = response.data;
+              callback(addresses);
+              totalAddresses.value = total;
+            })
+            .catch(() => {
+              toast({
                 component: ToastificationContent,
                 props: {
-                  title: 'Error fetching addresses list',
-                  icon: 'AlertTriangleIcon',
-                  variant: 'danger',
+                  title: "Error fetching addresses list",
+                  icon: "AlertTriangleIcon",
+                  variant: "danger",
                 },
-            })
-        }) */
-
-    }
+              });
+            });
+        }
+      };
 
     return {
         fetchAddresses,
@@ -114,6 +114,10 @@ export default function useAddressList(){
         isSortDirDesc,
         refetchData,
         refAddressListTable,
+        addr,
+        symbol,
+        fetchBalance,
+        statistic
     }
 
 

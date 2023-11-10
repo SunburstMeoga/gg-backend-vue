@@ -5,19 +5,19 @@
         <!--貨幣數據-->
         <b-row class="match-height">
             <b-col xl="3" md="3" sm="6" cols="6">
-                <statistic-card-vertical class="statistic-box" icon="TrendingUpIcon" :statistic="coin.total_supply"
+                <statistic-card-vertical class="statistic-box" icon="TrendingUpIcon" :statistic="Math.round(statistic.total_supply)"
                     statistic-title="總產量" color="success" />
             </b-col>
             <b-col xl="3" md="3" sm="6" cols="6">
-                <statistic-card-vertical class="statistic-box" icon="CpuIcon" :statistic="coin.today_supply"
+                <statistic-card-vertical class="statistic-box" icon="CpuIcon" :statistic="Math.round(statistic.today_supply)"
                     statistic-title="今日產量" color="warning" />
             </b-col>
             <b-col xl="3" md="3" sm="6" cols="6">
-                <statistic-card-vertical class="statistic-box" icon="RotateCwIcon" :statistic="coin.market_circulation"
+                <statistic-card-vertical class="statistic-box" icon="RotateCwIcon" :statistic="Math.round(statistic.market_circulation)"
                     statistic-title="市場流通" color="danger" />
             </b-col>
             <b-col xl="3" md="3" sm="6" cols="6">
-                <statistic-card-vertical class="statistic-box" icon="UsersIcon" :statistic="coin.address_average"
+                <statistic-card-vertical class="statistic-box" icon="UsersIcon" :statistic="Math.round(statistic.address_average)"
                     statistic-title="地址平均值" color="info" />
             </b-col>
         </b-row>
@@ -128,7 +128,7 @@ export default {
         BFormInput,
         BPagination,
         StatisticCardVertical,
-        vSelect
+        vSelect,
     },
     watch:{
         $route(to, from){
@@ -136,7 +136,7 @@ export default {
         }
     },  
     setup() {
-        const ADDRESS_STORE_MODULE_NAME = 'address';
+        const ADDRESS_STORE_MODULE_NAME = 'coin-address';
         const trigger = ref(false)
 
         const coin = ref({
@@ -162,16 +162,15 @@ export default {
 
         const fetchCoin = () => {
             console.log('fetchCoin', router.currentRoute.name)
-            if (router.currentRoute.name == "coins-pmt") {
-                coin.value.symbol = 'PMT';
-            } else if (router.currentRoute.name == "coins-mt") {
-                coin.value.symbol = 'MT';
-            } else if (router.currentRoute.name == "coins-rt") {
-                coin.value.symbol = 'RT';
-            } else if (router.currentRoute.name == "coins-bt") {
-                coin.value.symbol = 'BT';
+            if (router.currentRoute.name == "coins-wgt") {
+                coin.value.symbol = 'WGT';
+                symbol.value = 'WGT';
+            } else if (router.currentRoute.name == "coins-wgt-a") {
+                coin.value.symbol = 'WGT-A';
+                symbol.value = "WGT-A"
             }
             trigger.value = !trigger.value;
+            fetchBalance();
         }
 
         const {
@@ -187,6 +186,10 @@ export default {
             isSortDirDesc,
             refetchData,
             refAddressListTable,
+            symbol,
+            addr,
+            fetchBalance,
+            statistic,
         } = useAddressList();
 
 
@@ -206,6 +209,10 @@ export default {
             coin,
             fetchCoin,
             trigger,
+            symbol,
+            addr,
+            fetchBalance,
+            statistic
         }
     }
 

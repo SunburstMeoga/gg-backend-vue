@@ -168,6 +168,9 @@ export default {
             } else if (router.currentRoute.name == "coins-wgt-a") {
                 coin.value.symbol = 'WGT-A';
                 symbol.value = "WGT-A"
+            }else{
+                coin.value.symbol = 'WGT';
+                symbol.value = 'WGT';
             }
             trigger.value = !trigger.value;
             fetchBalance();

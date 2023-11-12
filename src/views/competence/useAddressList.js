@@ -11,6 +11,7 @@ export default function useAddressList() {
 
   const tableColumns = [
     { key: "tokenId", label: "tokenId" },
+    { key: "name"},
     { key: "owner", label: "owner" },
     /*     { key: "name", label: "名称" }, */
     /*     { key: "type", label: "卡类型" }, */

@@ -22,7 +22,7 @@ export default [
   {
     path: "/market/campaign-token",
     name: "campaign-token",
-    component: () => import("@/views/market/campaignToken"),
+    component: () => import("@/views/market/Card.vue"),
     meta: {
       action: "read",
       resource: "Auth",
@@ -31,7 +31,7 @@ export default [
   {
     path: "/market/character-card",
     name: "character-card",
-    component: () => import("@/views/market/characterCard"),
+    component: () => import("@/views/market/Card.vue"),
     meta: {
       action: "read",
       resource: "Auth",
@@ -40,7 +40,7 @@ export default [
   {
     path: "/market/scrooge-card",
     name: "scrooge-card",
-    component: () => import("@/views/market/scroogeCard"),
+    component: () => import("@/views/market/Card.vue"),
     meta: {
       action: "read",
       resource: "Auth",
@@ -79,7 +79,7 @@ export default [
   {
     path: "/casting",
     name: "casting",
-    component: () => import("@/views/cast/cast.vue"),
+    component: () => import("@/views/casting/Casting.vue"),
     meta: {
       action: "read",
       resource: "Auth",
@@ -89,7 +89,7 @@ export default [
   {
     path: "/market/wild-card",
     name: "wild-card",
-    component: () => import("@/views/market/wildCard"),
+    component: () => import("@/views/market/Card.vue"),
     meta: {
       action: "read",
       resource: "Auth",
@@ -98,7 +98,7 @@ export default [
   {
     path: "/market/composite-card",
     name: "composite-card",
-    component: () => import("@/views/market/compositeCard"),
+    component: () => import("@/views/market/Card.vue"),
     meta: {
       action: "read",
       resource: "Auth",
@@ -246,7 +246,7 @@ export default [
   {
     path: "/",
     name: "home",
-    component: () => import("@/views/roulette/Roulette.vue"),
+    component: () => import("@/views/coin/Coin.vue"),
     /*
         meta: {
           pageTitle: 'Home',

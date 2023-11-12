@@ -1,53 +1,8 @@
 <template>
-    <b-card title="鑄造調整">
+    <b-card title="">
         <b-row>
             <b-col cols="12">
-                <hr />
-                <h4>鑄造參數調整</h4>
-            </b-col>
-            <b-col cols="12" md="5">
-                <b-form-group class="" label="購買" label-for="set" label-cols-md="4">
-                    <b-input-group append="個配套">
-                        <b-form-input id="set" v-model="set" />
-                    </b-input-group>
-                </b-form-group>
-            </b-col>
-            <b-col cols="12" md="6">
-                <b-form-group class="" label="對應的卡池增加" label-for="box" label-cols-md="4">
-                    <b-input-group append="個盒子">
-                        <b-form-input id="box" v-model="box" />
-                    </b-input-group>
-                </b-form-group>
-            </b-col>
-            <b-col cols="12" md="1" class="justify-content-end d-flex">
-                <b-button variant="primary" @click="handleSubmit">
-                    儲存
-                </b-button>
-            </b-col>
-            <b-col cols="12">
-                <hr />
                 <h4>鑄造</h4>
-            </b-col>
-            <b-col cols="12" md="5">
-                <b-form-group class="" label="配套" label-for="set_id" label-cols-md="4">
-                    <v-select :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'" v-model="set_id" :options="setOptions"
-                        label="name" class="w-100" :reduce="(val) => val.id" :clearable="false">
-                    </v-select>
-                </b-form-group>
-            </b-col>
-            <b-col cols="12" md="6">
-                <b-form-group class="" label="鑄造數量" label-for="amount" label-cols-md="4">
-                    <b-input-group>
-                        <b-form-input id="amount" v-model="amount" />
-                        <b-input-group-append>
-                            <b-button variant="success" style="margin:0;padding:0 10px;" @click="handleSubmit">鑄造</b-button>
-                        </b-input-group-append>
-                    </b-input-group>
-                </b-form-group>
-            </b-col>
-            <b-col cols="12">
-                <hr />
-                <h4>回收</h4>
             </b-col>
             <b-col cols="12">
                 <b-card no-body class="mb-0">
@@ -81,11 +36,26 @@
                     <b-table ref="refAddressListTable" class="position-relative" :items="fetchAddresses" responsive
                         :fields="tableColumns" primary-key="id" :sort-by.sync="sortBy" show-empty
                         empty-text="No matching records found" :sort-desc.sync="isSortDirDesc">
+                        <template #cell(remain)="data">
+                            {{ data.item.total_set - data.item.total_count }}
+                          </template>
                         <template #cell(actions)="data">
                             <div class="return" @click="handleReturn(data.item)">
                                 <span class="align-middle ml-50">回收</span>
                             </div>
                           </template>
+                          <template #cell(changeNum)="data">
+                            <div class="">
+                                <!-- <span class="align-middle ml-50">刪除</span> -->
+                                <b-form-input v-model="data.item.changeNum" placeholder="请输入要铸造的数量"></b-form-input>
+                            </div>
+                        </template>
+                        <template #cell(confirm)="data">
+                            <div class="delete" @click="handleDelete(data.item)">
+                                <!-- <span class="align-middle ml-50">刪除</span> -->
+                                <b-button variant="success">铸造</b-button>
+                            </div>
+                        </template>
                     </b-table>
 
                     <div class="mx-2 mb-2">

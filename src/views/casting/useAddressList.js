@@ -11,10 +11,14 @@ export default function useAddressList(){
     const refAddressListTable = ref(null)
     
     const tableColumns = [
-        {key: 'token_id', label: 'TokenID'},
-        {key: 'price', label: '出售金額'},
-        {key: 'address', label: '持有地址'},
-        {key: 'actions', label: '回收'},
+        {key: 'tokenId', label: 'TokenID'},
+        {key: 'token_type.name', label: 'NFT类型'},
+        {key: 'name', label: 'NFT名称'},
+        {key: 'total_set', 'label': '总量'},
+        {key: 'total_count', 'label': '已铸造'},
+        { key: "remain", label: "市场剩余" },
+        {key: "changeNum", label: "铸造数量" },
+        {key: "confirm", label: "铸造" }
     ];
 
     const perPage = ref(10)
@@ -22,8 +26,8 @@ export default function useAddressList(){
     const currentPage = ref(1)
     const perPageOptions = [10, 25, 50, 100]
     const searchQuery = ref('')
-    const sortBy = ref('address')
-    const isSortDirDesc = ref(true)
+    const sortBy = ref('tokenId')
+    const isSortDirDesc = ref(false)
 
     const dataMeta = computed(() => {
         const localItemsCount = refAddressListTable.value ? refAddressListTable.value.localItems.length : 0
@@ -56,7 +60,7 @@ export default function useAddressList(){
 
     const fetchAddresses = (ctx, callback) => {
 
-        let address = [
+/*         let address = [
             {
                 token_id: 405,
                 address: '0x0002....2asd',
@@ -90,9 +94,9 @@ export default function useAddressList(){
         ]
 
         callback(address)
-        totalAddresses.value = address.length
+        totalAddresses.value = address.length */
 
-        /* store.dispatch('address/fetchAddresses', {
+         store.dispatch('casting/fetchNfts', {
             q: searchQuery.value,
             perPage: perPage.value,
             page: currentPage.value,
@@ -100,8 +104,8 @@ export default function useAddressList(){
             sortDesc: isSortDirDesc.value,
         })
         .then(response => {
-            const { addresses, total} = response.data
-            callback(addresses)
+            const { tokens, total} = response.data
+            callback(tokens)
             totalAddresses.value = total
         })
         .catch(() => {
@@ -113,7 +117,7 @@ export default function useAddressList(){
                   variant: 'danger',
                 },
             })
-        }) */
+        }) 
 
     }
 

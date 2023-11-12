@@ -50,7 +50,7 @@ export default [
   {
     path: "/setting/income-offerings",
     name: "income-offerings",
-    component: () => import("@/views/setting/incomeOfferings.vue"),
+    component: () => import("@/views/income/Income.vue"),
     meta: {
       action: "read",
       resource: "Auth",

@@ -43,7 +43,6 @@ import router from "@/router";
 import vSelect from "vue-select";
 import StatisticCardVertical from "@core/components/statistics-cards/StatisticCardVertical.vue";
 import tokenStoreModule from "./tokenStoreModule";
-import useAddressList from "./useAddressList"
 import useTokenList from "./useTokenList"
 //權限
 //import ability from '@/libs/acl/ability'

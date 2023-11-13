@@ -1,5 +1,12 @@
 <template>
     <b-card title="">
+        <b-overlay
+            :show="loading"
+            spinner-variant="primary"
+            spinner-type="grow"
+            spinner-small
+            rounded="sm"
+        >
         <b-row>
             <b-col cols="12">
                 <h4>鑄造</h4>
@@ -27,7 +34,7 @@
                             <b-col cols="12" md="6">
                                 <div class="d-flex align-items-center justify-content-end">
                                     <b-form-input v-model="searchQuery" class="d-inline-block mr-1"
-                                        placeholder="Search Address..." />
+                                        placeholder="Search NFT名称..." />
                                 </div>
                             </b-col>
                         </b-row>
@@ -51,7 +58,7 @@
                             </div>
                         </template>
                         <template #cell(confirm)="data">
-                            <div class="delete" @click="handleDelete(data.item)">
+                            <div class="delete" @click="handleTotalSet(data.item)">
                                 <!-- <span class="align-middle ml-50">刪除</span> -->
                                 <b-button variant="success">铸造</b-button>
                             </div>
@@ -90,7 +97,7 @@
                 </b-card>
             </b-col>
         </b-row>
-
+        </b-overlay>
     </b-card>
 </template>
 
@@ -106,7 +113,8 @@ import {
     BTable,
     BFormGroup,
     BInputGroup,
-    BInputGroupAppend
+    BInputGroupAppend,
+    BOverlay
 } from "bootstrap-vue";
 import store from "@/store";
 import { ref, onUnmounted, onMounted } from "@vue/composition-api";
@@ -128,7 +136,8 @@ export default {
         BTable,
         BInputGroup,
         BInputGroupAppend,
-        vSelect
+        vSelect,
+        BOverlay
     },
     methods: {
         handleSubmit() {
@@ -148,10 +157,63 @@ export default {
 
                 }
             });
+        },
+        handleTotalSet(item) {
+            if (!item.changeNum) {
+                this.$swal({
+                    title: "请输入要铸造的数量",
+                    text: "",
+                    icon: "error",
+                    customClass: {
+                        confirmButton: "btn btn-success",
+                    },
+                    buttonsStyling: false,
+                })
+                return
+            }
+
+            this.$swal({
+                title: "確認铸造?",
+                text: "",
+                showCancelButton: true,
+                confirmButtonText: "確定",
+                cancelButtonText: "取消",
+                customClass: {
+                    confirmButton: "btn btn-success",
+                    cancelButton: "btn btn-outline-danger ml-1",
+                },
+                buttonsStyling: false,
+            }).then((result) => {
+                if (result.value) {
+                    let data = { tokenId: item.tokenId, limit: Number(Number(item.total_set) + Number(item.changeNum)) }
+
+                    this.loading = true;
+                    store.dispatch('casting/setTotalSets', data)
+                        .then((response) => {
+                            console.log(response)
+                            this.refetchData();
+                            this.showMessage(
+                                "Success",
+                                response.data && response.data.message,
+                                "CheckIcon",
+                                "success"
+                            ); 
+                            this.loading = false;
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            this.showMessage('Fail', error.response.data.message, 'HeartIcon', 'danger')
+                            this.loading = false;
+                        });
+                }
+
+
+            })
         }
     },
     setup() {
         const CASTING_STORE_MODULE_NAME = 'casting';
+        const loading = ref(false);
 
         if (!store.hasModule(CASTING_STORE_MODULE_NAME))
             store.registerModule(CASTING_STORE_MODULE_NAME, castingStoreModule);
@@ -207,6 +269,7 @@ export default {
             isSortDirDesc,
             refetchData,
             refAddressListTable,
+            showMessage
         } = useAddressList();
 
         const fetchCasting = () => {
@@ -239,6 +302,8 @@ export default {
             isSortDirDesc,
             refetchData,
             refAddressListTable,
+            loading,
+            showMessage
         }
     }
 }

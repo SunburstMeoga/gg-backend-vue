@@ -27,6 +27,14 @@ export default {
           .then(response=>resolve(response))
           .catch(error=>reject(error))
       })
-  },
+    },
+    setTotalSets(ctx, data)
+    {
+        return new Promise((resolve, reject) => {
+            axiosIns.post('/nfts/total-sets', data)
+            .then(response => resolve(response))
+            .catch(error => reject(error))
+        })
+    }
   },
 };

@@ -1,17 +1,25 @@
 <template>
     <div>
+        <b-overlay
+        :show="loading"
+        spinner-variant="primary"
+        spinner-type="grow"
+        spinner-small
+        rounded="sm"
+    >
         <b-row>
             <b-col cols="12">
                 <b-card title="收益参数">
                     <b-table class="position-relative" :fields="incomeTableColumns" :items="items">
-                        <template #cell(change)="data">
+                        <template #cell(current)="data">
                             <div>
-                               <v-select v-model="data.item.selected" :options="options" label="label" :clearable="false"  :reduce="val => val.value"/>
+                                <v-select v-model="data.item.current" :options="options" label="label" :clearable="false"
+                                    :reduce="val => val.value" />
                             </div>
                         </template>
                         <template #cell(confirm)="data">
-     
-                            <div class="delete" @click="handleDelete(data.item)" >
+
+                            <div class="delete" @click="handleEdit(data.item)">
                                 <!-- <span class="align-middle ml-50">刪除</span> -->
                                 <b-button variant="success">确认变更</b-button>
                             </div>
@@ -21,10 +29,10 @@
 
             </b-col>
         </b-row>
-
+      
 
         <b-row>
-
+    
             <b-col cols="12">
                 <b-card class="mb-0" title="发售参数">
                     <div class="m-2">
@@ -48,12 +56,12 @@
                             <b-col cols="12" md="6">
                                 <div class="d-flex align-items-center justify-content-end">
                                     <b-form-input v-model="searchQuery" class="d-inline-block mr-1"
-                                        placeholder="Search Address..." />
+                                        placeholder="Search NFT名称..." />
                                 </div>
                             </b-col>
                         </b-row>
                     </div>
-
+                   
                     <b-table ref="refAddressListTable" class="position-relative" :items="fetchAddresses" responsive
                         :fields="tableColumns" primary-key="id" :sort-by.sync="sortBy" show-empty
                         empty-text="No matching records found" :sort-desc.sync="isSortDirDesc">
@@ -67,12 +75,13 @@
                             </div>
                         </template>
                         <template #cell(confirm)="data">
-                            <div class="delete" @click="handleDelete(data.item)">
+                            <div class="delete" @click="handleDaySet(data.item)">
                                 <!-- <span class="align-middle ml-50">刪除</span> -->
                                 <b-button variant="success">确认</b-button>
                             </div>
                         </template>
                     </b-table>
+                
 
                     <div class="mx-2 mb-2">
                         <b-row>
@@ -105,7 +114,9 @@
                     </div>
                 </b-card>
             </b-col>
+        
         </b-row>
+    </b-overlay>
     </div>
 </template>
 
@@ -124,7 +135,8 @@ import {
     BPagination,
     BTable,
     BInputGroup,
-    BInputGroupAppend
+    BInputGroupAppend,
+    BOverlay
 } from "bootstrap-vue";
 
 import nftStoreModule from "./nftStoreModule";
@@ -149,36 +161,129 @@ export default {
         BTable,
         BInputGroup,
         BInputGroupAppend,
-        vSelect
+        vSelect,
+        BOverlay
+    },
+    methods: {
+        handleEdit(item) {
+            this.$swal({
+                title: "確認更改"+item.type,
+                text: "",
+                showCancelButton: true,
+                confirmButtonText: "確定",
+                cancelButtonText: "取消",
+                customClass: {
+                    confirmButton: "btn btn-success",
+                    cancelButton: "btn btn-outline-danger ml-1",
+                },
+                buttonsStyling: false,
+            }).then((result) => {
+                if (result.value) {
+                    let data = { setting: item.current }
+                    let apiPath = (item.id == 1)?'setAWga':'setBWga'
+                    this.loading = true;
+                    store.dispatch('nft/'+apiPath, data)
+                        .then((response) => {
+                            //this.refetchData();
+                            this.fetchGameInfo();
+                            this.showMessage(
+                                "Success",
+                                response.data.message,
+                                "CheckIcon",
+                                "success"
+                            );
+                            this.loading = false;
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            this.showMessage('Fail', error.response.data.message, 'HeartIcon', 'danger')
+                            this.loading = false;
+                        });
+                }
+
+
+            })
+        },
+        handleDaySet(item) {
+            if (!item.changeNum) {
+                this.$swal({
+                    title: "请输入要变更的数量",
+                    text: "",
+                    icon: "error",
+                    customClass: {
+                        confirmButton: "btn btn-success",
+                    },
+                    buttonsStyling: false,
+                })
+                return
+            }
+
+            this.$swal({
+                title: "確認更改每日發售數量?",
+                text: "",
+                showCancelButton: true,
+                confirmButtonText: "確定",
+                cancelButtonText: "取消",
+                customClass: {
+                    confirmButton: "btn btn-success",
+                    cancelButton: "btn btn-outline-danger ml-1",
+                },
+                buttonsStyling: false,
+            }).then((result) => {
+                if (result.value) {
+                    let data = { tokenId: item.tokenId, limit: item.changeNum }
+
+                    this.loading = true;
+                    store.dispatch('nft/setDaySets', data)
+                        .then((response) => {
+                            this.refetchData();
+                            this.showMessage(
+                                "Success",
+                                response.data.message,
+                                "CheckIcon",
+                                "success"
+                            );
+                            this.loading = false;
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                            this.showMessage('Fail', error.response.data.message, 'HeartIcon', 'danger')
+                            this.loading = false;
+                        });
+                }
+
+
+            })
+        }
     },
     setup() {
         const NFT_STORE_MODULE_NAME = "nft"
+        const loading = ref(false)
 
         const incomeTableColumns = ref([
             { key: "type", label: "" },
-            { key: "current", label: "当前" },
-            { key: "change", label: "变更" },
+            { key: "current", label: "变更" },
             { key: "confirm", label: "确认" },
         ])
 
-        const items = ref([
-        {
-            type: "角色卡",
-            current: "WGT或WGT-A",
-        },
-        {
-            type: "WGT财神卡",
-            current: "收益：WGT或WGT-A",
-        },
-        {
-            type: "WGT-A财神卡",
-            current: "本金WGT-A",
-        },
-        ])
+/*         const items = ref([
+            {
+                type: "角色卡",
+                current: "WGT或WGT-A",
+            },
+            {
+                type: "WGT财神卡",
+                current: "收益：WGT或WGT-A",
+            },
+            {
+                type: "WGT-A财神卡",
+                current: "本金WGT-A",
+            },
+        ]) */
 
         const options = ref([
-            { label: "WGT", value: "WGT" },
-            { label: "WGT-A", value: "WGT-A" },
+            { label: "wga", value: false },
+            { label: "wga或者wgt", value: true },
         ])
 
         if (!store.hasModule(NFT_STORE_MODULE_NAME))
@@ -189,6 +294,10 @@ export default {
             if (store.hasModule(NFT_STORE_MODULE_NAME))
                 store.unregisterModule(NFT_STORE_MODULE_NAME);
         });
+
+        onMounted(() => {
+            fetchGameInfo();
+        })
 
         const {
             fetchAddresses,
@@ -203,6 +312,9 @@ export default {
             isSortDirDesc,
             refetchData,
             refAddressListTable,
+            showMessage,
+            fetchGameInfo,
+            items
         } = useAddressList();
 
         return {
@@ -220,7 +332,11 @@ export default {
             refAddressListTable,
             incomeTableColumns,
             items,
-            options
+            options,
+            showMessage,
+            loading,
+            fetchGameInfo,
+            items
         }
 
 

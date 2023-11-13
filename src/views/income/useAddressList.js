@@ -9,6 +9,7 @@ export default function useAddressList(){
     const toast = useToast()
 
     const refAddressListTable = ref(null)
+    const items = ref([])
     
     const tableColumns = [
         {key: 'tokenId', label: 'TokenID'},
@@ -59,6 +60,35 @@ export default function useAddressList(){
         refetchData()
     })
 
+    const fetchGameInfo = () => {
+        store.dispatch('nft/fetchGameInfo')
+        .then(response => {
+         
+          let item = response.data.data
+
+          items.value = [
+            {
+                id: 1,
+                type: "角色卡结算方式",
+                current: item.is_A_wga,
+            },
+            {
+                id: 2,
+                type: "WGT财神卡收益领取方式",
+                current: item.is_B_wga,
+            },
+    /*         {
+                type: "WGT-A财神卡",
+                current: "本金WGT-A",
+            }, */
+        ]
+
+        console.log(items.value)
+
+         
+        })
+    }
+
     const fetchAddresses = (ctx, callback) => {
 
          store.dispatch('nft/fetchNfts', {
@@ -99,5 +129,8 @@ export default function useAddressList(){
         isSortDirDesc,
         refetchData,
         refAddressListTable,
+        showMessage,
+        fetchGameInfo,
+        items
     }
 }

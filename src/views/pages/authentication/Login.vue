@@ -8,7 +8,8 @@
 
 
           <h2 class="brand-text text-primary ml-1">
-              <img src="@/assets/images/logo/minter-logo.png" class="login-logo" />
+              <!-- <img src="@/assets/images/logo/minter-logo.png" class="login-logo" /> -->
+              GUANGONG
           </h2>
         </b-link>
         <!--

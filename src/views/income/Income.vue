@@ -10,7 +10,7 @@
         <b-row>
             <b-col cols="12">
                 <b-card title="收益参数">
-                    <b-table class="position-relative" :fields="incomeTableColumns" :items="items">
+                    <b-table class="position-relative" :fields="incomeTableColumns" :items="items" responsive>
                         <template #cell(current)="data">
                             <div>
                                 <v-select v-model="data.item.current" :options="options" label="label" :clearable="false"

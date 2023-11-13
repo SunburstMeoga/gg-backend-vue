@@ -34,6 +34,14 @@ export default function useAddressList() {
     count_type_6: 0,
     reward_type_7: 0,
     count_type_7: 0,
+    number_of_invite:0,
+    personal: 0,
+    income_card:0,
+    income_deposite:0,
+    income_personal:0,
+    income_team:0,
+    income_pool:0,
+    income_sum:0
   });
   const loading_stat = ref(false);
   const loading_nft = ref(false);

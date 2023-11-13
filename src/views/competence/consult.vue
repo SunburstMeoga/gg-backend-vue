@@ -25,7 +25,7 @@
             <b-row class="match-height">
                 <b-col xl="3" md="3" sm="6" cols="6">
                     <statistic-card-vertical class="statistic-box" icon="TrendingUpIcon"
-                        :statistic="Math.round(statistic.reward_type_1)" statistic-title="个人业绩" color="success" />
+                        :statistic="Math.round(statistic.reward_type_1)" statistic-title="个⼈贡献值" color="success" />
                 </b-col>
                 <b-col xl="3" md="3" sm="6" cols="6">
                     <statistic-card-vertical class="statistic-box" icon="CpuIcon"
@@ -33,11 +33,11 @@
                 </b-col>
                 <b-col xl="3" md="3" sm="6" cols="6">
                     <statistic-card-vertical class="statistic-box" icon="RotateCwIcon"
-                        :statistic="Math.round(statistic.reward_type_7)" statistic-title="邀请数量" color="danger" />
+                        :statistic="Math.round(statistic.number_of_invite)" statistic-title="邀请数量" color="danger" />
                 </b-col>
                 <b-col xl="3" md="3" sm="6" cols="6">
                     <statistic-card-vertical class="statistic-box" icon="UsersIcon"
-                        :statistic="Math.round(statistic.reward_type_3)" statistic-title="个人收益值" color="info" />
+                        :statistic="Math.round(Number(statistic.income_personal))" statistic-title="个人收益值" color="info" />
                 </b-col>
             </b-row>
         </b-overlay>

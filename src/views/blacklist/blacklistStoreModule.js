@@ -14,7 +14,15 @@ export default {
             .catch(error=>reject(error))
         })
     },
-    addBlacklistAddress(cts, data)
+    setBlacklistAddress(cts, data)
+    {
+        return new Promise((resolve, reject) => {
+            axiosIns.post('/games/set-blacklist', data)
+            .then(response=>resolve(response))
+            .catch(error=>reject(error))
+        })
+    },
+ /*    addBlacklistAddress(cts, data)
     {
         return new Promise((resolve, reject) => {
             axiosIns.post('/blacklists', data)
@@ -29,6 +37,6 @@ export default {
             .then(response=>resolve(response))
             .catch(error=>reject(error))
         })
-    }
+    } */
   },
 };

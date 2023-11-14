@@ -1,93 +1,96 @@
 <template>
     <div>
-    <!--     <b-alert variant="primary" show>
+        <!--     <b-alert variant="primary" show>
             <div class="alert-body">
                 <span><strong>黑名單：</strong> 只允許購買配套，無法購買NFT和獲得動態收益</span>
             </div>
         </b-alert> -->
-        <b-card title="" :key="`coin_${trigger}`">
-            <b-row>
-                <b-col cols="12" md="12">
-                    <b-input-group>
-                    <b-form-input v-model="address" class="d-inline-block mr-1"
-                    placeholder="輸入黑名單地址..." />
-                    <b-input-group-append>
-                        <b-button variant="success" style="margin:0;padding:0 10px;" @click="handleSubmit">增加</b-button>
-                      </b-input-group-append>
-                </b-input-group>
-                </b-col>
-            </b-row>
-        </b-card>
-        <b-card no-body class="mb-0">
-            <div class="m-2">
-                <!-- Table Top -->
+        <b-overlay :show="loading" spinner-variant="primary" spinner-type="grow" spinner-small rounded="sm">
+            <b-card title="" :key="`coin_${trigger}`">
                 <b-row>
-                    <!-- Per Page -->
-                    <b-col cols="12" md="6" class="
+                    <b-col cols="12" md="12">
+                        <b-input-group>
+                            <b-form-input v-model="address" class="d-inline-block mr-1" placeholder="輸入黑名單地址..." />
+                            <b-input-group-append>
+                                <b-button variant="success" style="margin:0;padding:0 10px;"
+                                    @click="handleSubmit">增加</b-button>
+                            </b-input-group-append>
+                        </b-input-group>
+                    </b-col>
+                </b-row>
+            </b-card>
+            <b-card no-body class="mb-0">
+                <div class="m-2">
+                    <!-- Table Top -->
+                    <b-row>
+                        <!-- Per Page -->
+                        <b-col cols="12" md="6" class="
                     d-flex
                     align-items-center
                     justify-content-start
                     mb-1 mb-md-0
                   ">
-                        <label>Show</label>
-                        <v-select v-model="perPage" :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-                            :options="perPageOptions" :clearable="false" class="per-page-selector d-inline-block mx-50" />
-                        <label>entries</label>
-                    </b-col>
+                            <label>Show</label>
+                            <v-select v-model="perPage" :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                                :options="perPageOptions" :clearable="false"
+                                class="per-page-selector d-inline-block mx-50" />
+                            <label>entries</label>
+                        </b-col>
 
-                    <!-- Search -->
-                    <b-col cols="12" md="6">
-                        <div class="d-flex align-items-center justify-content-end">
-                            <b-form-input v-model="searchQuery" class="d-inline-block mr-1"
-                                placeholder="搜尋黑名單地址..." />
+                        <!-- Search -->
+                        <b-col cols="12" md="6">
+                            <div class="d-flex align-items-center justify-content-end">
+                                <b-form-input v-model="searchQuery" class="d-inline-block mr-1" placeholder="搜尋黑名單地址..." />
+                            </div>
+                        </b-col>
+                    </b-row>
+                </div>
+
+                <b-table ref="refBlacklistListTable" class="position-relative" :items="fetchBlacklists" responsive
+                    :fields="tableColumns" primary-key="id" :sort-by.sync="sortBy" show-empty
+                    empty-text="No matching records found" :sort-desc.sync="isSortDirDesc">
+                    <template #cell(utc)="data">{{ timestampToDateTIme(data.item.utc) }}</template>
+                    <template #cell(action)="data">
+                        <div class="delete" @click="handleDelete(data.item)">
+                            <span class="align-middle ml-50">刪除</span>
                         </div>
-                    </b-col>
-                </b-row>
-            </div>
 
-            <b-table ref="refBlacklistListTable" class="position-relative" :items="fetchBlacklists" responsive
-                :fields="tableColumns" primary-key="id" :sort-by.sync="sortBy" show-empty
-                empty-text="No matching records found" :sort-desc.sync="isSortDirDesc">
-                <template #cell(utc)="data">{{timestampToDateTIme(data.item.utc)}}</template>
-                <template #cell(action)="data">
-                    <div class="delete" @click="handleDelete(data.item)">
-                        <span class="align-middle ml-50">刪除</span>
-                    </div>
-                        
-                   
-                
-                  </template>
-            </b-table>
 
-            <div class="mx-2 mb-2">
-                <b-row>
-                    <b-col cols="12" sm="6" class="
+
+                    </template>
+                </b-table>
+
+                <div class="mx-2 mb-2">
+                    <b-row>
+                        <b-col cols="12" sm="6" class="
                     d-flex
                     align-items-center
                     justify-content-center justify-content-sm-start
                   ">
-                        <span class="text-muted">Showing {{ dataMeta.from }} to {{ dataMeta.to }} of
-                            {{ dataMeta.of }} entries</span>
-                    </b-col>
-                    <!-- Pagination -->
-                    <b-col cols="12" sm="6" class="
+                            <span class="text-muted">Showing {{ dataMeta.from }} to {{ dataMeta.to }} of
+                                {{ dataMeta.of }} entries</span>
+                        </b-col>
+                        <!-- Pagination -->
+                        <b-col cols="12" sm="6" class="
                     d-flex
                     align-items-center
                     justify-content-center justify-content-sm-end
                   ">
-                        <b-pagination v-model="currentPage" :total-rows="totalBlacklists" :per-page="perPage" first-number
-                            last-number class="mb-0 mt-1 mt-sm-0" prev-class="prev-item" next-class="next-item">
-                            <template #prev-text>
-                                <feather-icon icon="ChevronLeftIcon" size="18" />
-                            </template>
-                            <template #next-text>
-                                <feather-icon icon="ChevronRightIcon" size="18" />
-                            </template>
-                        </b-pagination>
-                    </b-col>
-                </b-row>
-            </div>
-        </b-card>
+                            <b-pagination v-model="currentPage" :total-rows="totalBlacklists" :per-page="perPage"
+                                first-number last-number class="mb-0 mt-1 mt-sm-0" prev-class="prev-item"
+                                next-class="next-item">
+                                <template #prev-text>
+                                    <feather-icon icon="ChevronLeftIcon" size="18" />
+                                </template>
+                                <template #next-text>
+                                    <feather-icon icon="ChevronRightIcon" size="18" />
+                                </template>
+                            </b-pagination>
+                        </b-col>
+                    </b-row>
+                </div>
+            </b-card>
+        </b-overlay>
     </div>
 </template>
 <script>
@@ -105,7 +108,8 @@ import {
     BPagination,
     BTable,
     BInputGroup,
-    BInputGroupAppend
+    BInputGroupAppend,
+    BOverlay
 } from "bootstrap-vue";
 import blacklistStoreModule from "./blacklistStoreModule";
 import useBlacklistList from "./useBlacklistList"
@@ -135,11 +139,11 @@ export default {
         BTable,
         BInputGroup,
         BInputGroupAppend,
-        vSelect
+        vSelect,
+        BOverlay
     },
-    methods:{
-        handleSubmit()
-        {
+    methods: {
+        handleSubmit() {
             this.$swal({
                 title: "確定新增黑名單地墐?",
                 text: "",
@@ -153,8 +157,10 @@ export default {
                 buttonsStyling: false,
             }).then((result) => {
                 if (result.value) {
-                    store.dispatch("blacklist/addBlacklistAddress", {addr: this.address})
-                    .then((response) => {
+                    this.loading = true;
+                    store.dispatch("blacklist/setBlacklistAddress", { address: this.address, setting: true })
+                        .then((response) => {
+                            this.loading = false;
                             this.refetchData();
                             this.address = '';
                             this.showMessage(
@@ -166,12 +172,13 @@ export default {
                         })
                         .catch((error) => {
                             console.log(error);
+                            this.loading =false
                             this.showMessage('Fail', error.response.data.message, 'HeartIcon', 'danger')
                         });
-                }});
+                }
+            });
         },
-        handleDelete(item)
-        {
+        handleDelete(item) {
             this.$swal({
                 title: "確定刪除?",
                 text: "",
@@ -187,8 +194,10 @@ export default {
                 if (result.value) {
                     //this.showMessage('Fail', '還没連接API', 'HeartIcon', 'danger')
                     //連接API儲存數據
-                     store.dispatch("blacklist/removeBlacklistAddress", {addr: item.addr})
+                    this.loading = true;
+                    store.dispatch("blacklist/setBlacklistAddress", { address: item.addr, setting: false })
                         .then((response) => {
+                            this.loading = false;
                             this.refetchData();
                             this.showMessage(
                                 "Success",
@@ -199,14 +208,17 @@ export default {
                         })
                         .catch((error) => {
                             console.log(error);
+                            this.loading =false;
                             this.showMessage('Fail', error.response.data.message, 'HeartIcon', 'danger')
-                        }); 
+                        });
                 }
             })
         }
     },
     setup() {
         const BLACKLIST_STORE_MODULE_NAME = 'blacklist';
+        const loading = ref(false)
+
 
         if (!store.hasModule(BLACKLIST_STORE_MODULE_NAME))
             store.registerModule(BLACKLIST_STORE_MODULE_NAME, blacklistStoreModule);
@@ -246,7 +258,8 @@ export default {
             isSortDirDesc,
             refetchData,
             refBlacklistListTable,
-            showMessage
+            showMessage,
+            loading
         }
 
     }
@@ -261,13 +274,13 @@ export default {
     margin-bottom: 0px;
 }
 
-.delete{
+.delete {
     color: #ff0000;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
-.delete:hover{
+.delete:hover {
     transform: translateY(-2px);
     text-decoration: underline;
 }

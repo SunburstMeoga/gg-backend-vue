@@ -10,10 +10,10 @@
         <b-row>
             <b-col cols="12">
                 <b-card title="收益参数">
-                    <b-table class="position-relative" :fields="incomeTableColumns" :items="items" responsive>
+                    <b-table class="position-relative" :fields="incomeTableColumns" :items="items">
                         <template #cell(current)="data">
                             <div>
-                                <v-select v-model="data.item.current" :options="options" label="label" :clearable="false"
+                                <v-select class="auto-height-options" v-model="data.item.current" :options="data.item.options" label="label" :clearable="false"
                                     :reduce="val => val.value" />
                             </div>
                         </template>
@@ -26,7 +26,6 @@
                         </template>
                     </b-table>
                 </b-card>
-
             </b-col>
         </b-row>
       
@@ -179,8 +178,9 @@ export default {
                 buttonsStyling: false,
             }).then((result) => {
                 if (result.value) {
-                    let data = { setting: item.current }
-                    let apiPath = (item.id == 1)?'setAWga':'setBWga'
+                    let data = { setting: Number(item.current) }
+                    console.log(data)
+                    let apiPath = (item.id == 1)?'setWgtA':(item.id == 2)?'setWgtB':'setWgaB'
                     this.loading = true;
                     store.dispatch('nft/'+apiPath, data)
                         .then((response) => {
@@ -368,4 +368,7 @@ export default {
     transform: translateY(-2px);
     text-decoration: underline;
 }
+.auto-height-options .dropdown-menu {
+    max-height: none;
+  }
 </style>

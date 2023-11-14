@@ -28,18 +28,26 @@ export default {
                 .catch(error=>reject(error))
             })
         },
-        setAWga(ctx, data){
+        setWgtA(ctx, data){
             //set-a-wga
             return new Promise((resolve, reject) => {
-                axiosIns.post('/games/set-a-wga', data)
+                axiosIns.post('/games/set-wgt-a', data)
                 .then(response=>resolve(response))
                 .catch(error=>reject(error))
             })
         },
-        setBWga(ctx, data){
+        setWgtB(ctx, data){
             //set-b-wga
             return new Promise((resolve, reject) => {
-                axiosIns.post('/games/set-b-wga', data)
+                axiosIns.post('/games/set-wgt-b', data)
+                .then(response=>resolve(response))
+                .catch(error=>reject(error))
+            })
+        },
+        setWgaB(ctx, data){
+            //set-b-wga
+            return new Promise((resolve, reject) => {
+                axiosIns.post('/games/set-wga-b', data)
                 .then(response=>resolve(response))
                 .catch(error=>reject(error))
             })

@@ -22,21 +22,5 @@ export default {
             .catch(error=>reject(error))
         })
     },
- /*    addBlacklistAddress(cts, data)
-    {
-        return new Promise((resolve, reject) => {
-            axiosIns.post('/blacklists', data)
-            .then(response=>resolve(response))
-            .catch(error=>reject(error))
-        })
-    },
-    removeBlacklistAddress(cts, queryParams)
-    {
-        return new Promise((resolve, reject) => {
-            axiosIns.delete('/blacklists', {params: queryParams})
-            .then(response=>resolve(response))
-            .catch(error=>reject(error))
-        })
-    } */
   },
 };

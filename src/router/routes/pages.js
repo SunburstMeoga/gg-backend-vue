@@ -1,4 +1,13 @@
 export default [
+  {
+    path: "/reissue",
+    name: "reissue",
+    component: () => import("@/views/reissue/Reissue.vue"),
+    meta: {
+      action: "read",
+      resource: "Auth",
+    },
+  },
   //货币
   {
     path: "/coins/wgt",

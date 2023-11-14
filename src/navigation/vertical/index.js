@@ -80,6 +80,13 @@ export default [
         action: "read",
         resource: "Auth",
       },
+      {
+        title: "補發",
+        route: "reissue",
+        action: "read",
+        resource: "Auth",
+      },
+      
       // {
       //   title: "權限",
       //   route: "roles-list",

@@ -13,7 +13,7 @@ export default function useReissueList(){
     const tableColumns = [
         {key: 'id', label: 'id'},
         {key: 'tokenId', label: 'tokenId'},
-        {key: 'owner'},
+        {key: 'from_to', label: 'from/to'},
         {key: 'token_type_name', label: 'NFT類型'},
         {key: 'name', label: 'NFT'},
         {key: 'utc', label: '更新時間'},

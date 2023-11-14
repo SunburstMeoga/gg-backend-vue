@@ -64,10 +64,13 @@
                         <div class="delete" @click="handleDelete(data.item)">
                             <span class="align-middle ml-50">刪除</span>
                         </div>
-
-
-
                     </template>
+                    <template #cell(from_to)="data">
+                        <p v-if="data.item.owner">{{data.item.owner}}</p>
+                        <p v-if="data.item.income_addr">{{data.item.income_addr}}</p>
+                        
+                    </template>
+
                 </b-table>
 
                 <div class="mx-2 mb-2">
@@ -184,7 +187,7 @@ export default {
             }).then((result) => {
                 if (result.value) {
                     this.loading = true;
-                    store.dispatch("reissue/addReissueAddress", { tokenId: this.tokenId, owner: this.address })
+                    store.dispatch("reissue/addReissueAddress", { tokenId: this.tokenId, income_addr: this.address })
                         .then((response) => {
                             this.loading = false;
                             this.refetchData();

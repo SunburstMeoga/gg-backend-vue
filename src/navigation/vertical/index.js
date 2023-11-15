@@ -98,7 +98,7 @@ export default [
   {
     title: "权限",
     route: "",
-    icon: "SettingsIcon",
+    icon: "ToolIcon",
     children: [
       {
         title: "查询",
@@ -117,7 +117,14 @@ export default [
   {
     title: "铸造",
     route: "casting",
-    icon: "UserXIcon",
+    icon: "DatabaseIcon",
+    action: "read",
+    resource: "Auth",
+  },
+  {
+    title: "合約",
+    route: "server",
+    icon: "CpuIcon",
     action: "read",
     resource: "Auth",
   },

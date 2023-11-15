@@ -1,5 +1,14 @@
 export default [
   {
+    path: '/server',
+    name: 'server',
+    component: () => import("@/views/server/Server.vue"),
+    meta: {
+      action: "read",
+      resource: "Auth",
+    },
+  },
+  {
     path: "/reissue",
     name: "reissue",
     component: () => import("@/views/reissue/Reissue.vue"),

@@ -7,10 +7,10 @@
                 <b-card :title="item.name">
                     <!-- :header="`总量:${item.count}`" :footer="`剩余数量:${item.surplus}`"  -->
                     <b-card-text style="margin-top:10px;">
-                        <b-button href="#" variant="success" size="sm">{{ `总量：${item.total_set}` }}</b-button>
+                        <b-button class="w-100" href="#" variant="success" size="sm">{{ `总量：${item.total_set}` }}</b-button>
                     </b-card-text>
                     <b-card-text>
-                        <b-button href="#" variant="danger" size="sm">{{ `市场剩余：${item.total_set - item.total_count}`
+                        <b-button class="w-100" href="#" variant="danger" size="sm">{{ `市场剩余：${item.total_set - item.total_count}`
                         }}</b-button>
                     </b-card-text>
                 </b-card>

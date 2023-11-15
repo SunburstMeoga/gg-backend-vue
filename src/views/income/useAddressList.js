@@ -72,9 +72,9 @@ export default function useAddressList(){
                 type: "角色卡结算方式",
                 current: Number(item.wgt_A),
                 options: [
-                    { label: "⽤⼾可以⾃由选择", value: 0 },
-                    { label: "wga领取", value: 1 },
-                    { label: "wgt领取", value: 2 },
+                    { label: "收益：用户自由选择", value: 0 },
+                    { label: "收益：WGT-A领取", value: 1 },
+                   // { label: "wgt领取", value: 2 },
                 ]
             },
             {
@@ -82,9 +82,9 @@ export default function useAddressList(){
                 type: "WGT财神卡收益领取方式",
                 current: Number(item.wgt_B),
                 options: [
-                    { label: "⽤⼾可以⾃由选择", value: 0 },
-                    { label: "wga领取", value: 1 },
-                    { label: "wgt领取", value: 2 },
+                    { label: "收益：用户自由选择", value: 0 },
+                    { label: "收益：WGT-A领取", value: 1 },
+                    //{ label: "wgt领取", value: 2 },
                 ]
             },
              {
@@ -92,8 +92,8 @@ export default function useAddressList(){
                 type: "WGT-A财神卡",
                 current: Number(item.wga_B),
                 options: [
-                    { label: "wga领取", value: 1 },
-                    { label: "wgt领取", value: 2 },
+                    { label: "WGT-A领取", value: 1 },
+                    { label: "WGT领取", value: 2 },
                 ]
             }, 
         ]

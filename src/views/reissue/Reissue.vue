@@ -4,28 +4,35 @@
             <b-card title="補發管理" :key="`reissue_${trigger}`">
                 <b-row>
                     <b-col cols="12" md="12">
-                  
-                            <b-row>
-                                <b-col cols="12" md="5" class="mt-1">
-                            <b-form-input v-model="address" class="d-inline-block mr-1" placeholder="輸入地址" />
+
+                        <b-row>
+                            <b-col cols="12" md="3" class="mt-1">
+                                <b-form-input v-model="address" class="d-inline-block mr-1" placeholder="輸入地址" />
                             </b-col>
-                            <b-col cols="12" md="5" class="mt-1">
-                            <v-select  v-model="tokenId" :options="tokenOptions" :filter="typeSearch" label="name" :reduce="(val) => val.tokenId" placeholder="請選擇補發NFT種類">
-                                <template #option="{token_type_name, name}">
-                                    [{{ token_type_name }}] {{ name }}
-                              </template>
-                               <template #selected-option="{token_type_name, name}">
-                                    [{{ token_type_name }}] {{ name }}
-                              </template>
-                            </v-select>
-                           </b-col>
-                           <b-col cols="12" md="2" class="mt-1">
-                            <b-button @click="handleSubmit()" variant="success">
-                                補發
-                            </b-button>
-                           </b-col>
-                            </b-row>
-                   
+                            <b-col cols="12" md="3" class="mt-1">
+                                <flat-pickr v-model="utc" class="form-control"
+                                    :config="{ enableTime: true, dateFormat: 'Y-m-d H:i' }" placeholder="請選擇補發時間" />
+                            </b-col>
+                            <b-col cols="12" md="3" class="mt-1">
+                                <v-select v-model="tokenId" :options="tokenOptions" :filter="typeSearch" label="name"
+                                    :reduce="(val) => val.tokenId" placeholder="請選擇補發NFT種類">
+                                    <template #option="{ token_type_name, name }">
+                                        [{{ token_type_name }}] {{ name }}
+                                    </template>
+                                    <template #selected-option="{ token_type_name, name }">
+                                        [{{ token_type_name }}] {{ name }}
+                                    </template>
+                                </v-select>
+                            </b-col>
+
+
+                            <b-col cols="12" md="2" class="mt-1">
+                                <b-button @click="handleSubmit()" variant="success">
+                                    補發
+                                </b-button>
+                            </b-col>
+                        </b-row>
+
                     </b-col>
                 </b-row>
             </b-card>
@@ -59,16 +66,17 @@
                 <b-table ref="refReissueListTable" class="position-relative" :items="fetchReissues" responsive
                     :fields="tableColumns" primary-key="id" :sort-by.sync="sortBy" show-empty
                     empty-text="No matching records found" :sort-desc.sync="isSortDirDesc">
-                    <template #cell(utc)="data"><span v-if="data.item.utc">{{ timestampToDateTIme(data.item.utc) }}</span></template>
+                    <template #cell(utc)="data"><span v-if="data.item.utc">{{ timestampToDateTIme(data.item.utc)
+                    }}</span></template>
                     <template #cell(action)="data">
                         <div class="delete" @click="handleDelete(data.item)">
                             <span class="align-middle ml-50">刪除</span>
                         </div>
                     </template>
                     <template #cell(from_to)="data">
-                        <p v-if="data.item.owner">{{data.item.owner}}</p>
-                        <p v-if="data.item.income_addr">{{data.item.income_addr}}</p>
-                        
+                        <p v-if="data.item.owner">{{ data.item.owner }}</p>
+                        <p v-if="data.item.income_addr">{{ data.item.income_addr }}</p>
+
                     </template>
 
                 </b-table>
@@ -89,9 +97,8 @@
                     align-items-center
                     justify-content-center justify-content-sm-end
                   ">
-                            <b-pagination v-model="currentPage" :total-rows="totalReissues" :per-page="perPage"
-                                first-number last-number class="mb-0 mt-1 mt-sm-0" prev-class="prev-item"
-                                next-class="next-item">
+                            <b-pagination v-model="currentPage" :total-rows="totalReissues" :per-page="perPage" first-number
+                                last-number class="mb-0 mt-1 mt-sm-0" prev-class="prev-item" next-class="next-item">
                                 <template #prev-text>
                                     <feather-icon icon="ChevronLeftIcon" size="18" />
                                 </template>
@@ -129,6 +136,8 @@ import useReissueList from "./useReissueList"
 import store from "@/store";
 import { ref, onUnmounted, onMounted } from "@vue/composition-api";
 import vSelect from "vue-select";
+import flatPickr from 'vue-flatpickr-component'
+
 
 export default {
     data() {
@@ -136,6 +145,7 @@ export default {
             address: '',
             trigger: 0,
             tokenId: null,
+            utc: this.getCurrentDateTime(),
         }
     },
     components: {
@@ -154,22 +164,55 @@ export default {
         BInputGroup,
         BInputGroupAppend,
         vSelect,
-        BOverlay
+        BOverlay,
+        flatPickr,
     },
     methods: {
-        typeSearch(options, search){
-        var returnOptions = options.filter(item => {
-            return item.name.toLowerCase().includes(search.toLowerCase()) || item.token_type_name.toLowerCase().includes(search.toLowerCase())
-        })
+        getCurrentDateTime() {
+            var now = new Date();
+
+            var year = now.getFullYear();
+            var month = (now.getMonth() + 1).toString().padStart(2, '0');  // JavaScript months are 0-based
+            var day = now.getDate().toString().padStart(2, '0');
+            var hours = now.getHours().toString().padStart(2, '0');
+            var minutes = now.getMinutes().toString().padStart(2, '0');
+
+            var formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}`;
+
+            return formattedDateTime;
+        },
+        convertHKTimeToTimestamp(hkDateTime) {
+            if (!hkDateTime) {
+                return;
+            }
+            // Replace space with 'T' to make the string ISO 8601 compliant
+            var compliantDateTime = hkDateTime.replace(' ', 'T');
+
+            // Parse the Hong Kong datetime string into a Date object
+            var hkDate = new Date(compliantDateTime + "+08:00");
+
+            // Check if the date is valid
+            if (isNaN(hkDate.getTime())) {
+                throw new Error('Invalid time value');
+            }
+
+            // Convert the HK date object to a Unix timestamp (in seconds)
+            var timestamp = Math.floor(hkDate.getTime() / 1000);
+
+            return timestamp;
+        },
+
+        typeSearch(options, search) {
+            var returnOptions = options.filter(item => {
+                return item.name.toLowerCase().includes(search.toLowerCase()) || item.token_type_name.toLowerCase().includes(search.toLowerCase())
+            })
             return returnOptions
         },
         handleSubmit() {
-            if(!this.address || this.address == '')
-            {
+            if (!this.address || this.address == '') {
                 this.showMessage('Fail', '請輸入補發地址', 'HeartIcon', 'danger')
             }
-            if(!this.tokenId || this.tokenId == null)
-            {
+            if (!this.tokenId || this.tokenId == null) {
                 this.showMessage('Fail', '請選擇補發NFT種類', 'HeartIcon', 'danger')
             }
 
@@ -187,7 +230,7 @@ export default {
             }).then((result) => {
                 if (result.value) {
                     this.loading = true;
-                    store.dispatch("reissue/addReissueAddress", { tokenId: this.tokenId, income_addr: this.address })
+                    store.dispatch("reissue/addReissueAddress", { tokenId: this.tokenId, income_addr: this.address, utc: this.convertHKTimeToTimestamp(this.utc) })
                         .then((response) => {
                             this.loading = false;
                             this.refetchData();
@@ -201,7 +244,7 @@ export default {
                         })
                         .catch((error) => {
                             console.log(error);
-                            this.loading =false
+                            this.loading = false
                             this.showMessage('Fail', error.response.data.message, 'HeartIcon', 'danger')
                         });
                 }
@@ -237,7 +280,7 @@ export default {
                         })
                         .catch((error) => {
                             console.log(error);
-                            this.loading =false;
+                            this.loading = false;
                             this.showMessage('Fail', error.response.data.message, 'HeartIcon', 'danger')
                         });
                 }
@@ -306,6 +349,7 @@ export default {
 <style lang="scss">
 @import "@core/scss/vue/libs/vue-select.scss";
 @import "@/assets/scss/variables/_variables.scss";
+@import '@core/scss/vue/libs/vue-flatpicker.scss';
 
 .card .card-title {
     margin-bottom: 0px;
@@ -323,7 +367,7 @@ export default {
 }
 
 .v-select ::placeholder {
-    color: lightgray; /* Replace with your desired color */
-  }
-
+    color: lightgray;
+    /* Replace with your desired color */
+}
 </style>

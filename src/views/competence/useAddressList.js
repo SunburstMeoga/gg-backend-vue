@@ -11,11 +11,13 @@ export default function useAddressList() {
 
   const tableColumns = [
     { key: "tokenId", label: "tokenId" },
-    { key: "name"},
+    { key: "name" },
     { key: "owner", label: "owner" },
     /*     { key: "name", label: "名称" }, */
     /*     { key: "type", label: "卡类型" }, */
-    { key: "utc", label: "时间" },
+    { key: "utc", label: "发放时间" },
+    { key: "begin", label: "出征时间" },
+    { key: "end", label: "结算时间" },
   ];
 
   const addr = ref(null);
@@ -34,14 +36,14 @@ export default function useAddressList() {
     count_type_6: 0,
     reward_type_7: 0,
     count_type_7: 0,
-    number_of_invite:0,
+    number_of_invite: 0,
     personal: 0,
-    income_card:0,
-    income_deposite:0,
-    income_personal:0,
-    income_team:0,
-    income_pool:0,
-    income_sum:0
+    income_card: 0,
+    income_deposite: 0,
+    income_personal: 0,
+    income_team: 0,
+    income_pool: 0,
+    income_sum: 0,
   });
   const loading_stat = ref(false);
   const loading_nft = ref(false);
@@ -143,7 +145,7 @@ export default function useAddressList() {
 
     callback(address);
     totalAddresses.value = address.length; */
-    loading_nft.value = true
+    loading_nft.value = true;
     store
       .dispatch("address/fetchAddresses", {
         q: searchQuery.value,
@@ -153,14 +155,15 @@ export default function useAddressList() {
         sortDesc: isSortDirDesc.value,
       })
       .then((response) => {
-        loading_nft.value = false
+        loading_nft.value = false;
         const { nfts, total } = response.data;
         callback(nfts);
         totalAddresses.value = total;
+        console.log(response);
       })
       .catch((error) => {
-        loading_nft.value = false
-        console.log(error)
+        loading_nft.value = false;
+        console.log(error);
         toast({
           component: ToastificationContent,
           props: {
@@ -189,6 +192,6 @@ export default function useAddressList() {
     addr,
     statistic,
     loading_stat,
-    loading_nft
+    loading_nft,
   };
 }
